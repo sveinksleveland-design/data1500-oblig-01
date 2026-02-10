@@ -15,10 +15,16 @@
 **Identifiserte entiteter:**
 
 [Skriv ditt svar her - list opp alle entitetene du har identifisert]
+sykkelstasjoner
+sykler
+kunde
 
 **Attributter for hver entitet:**
 
 [Skriv ditt svar her - list opp attributtene for hver entitet]
+sykkelstasjoner: stasjon_id, sykel_id, parkering_plass
+sykler: sykel_id, leie_status, utleie_tid, levering_tid
+kunde: kunde_id, mobilnummer, epost, fornavn, etternavn 
 
 ---
 
@@ -27,14 +33,18 @@
 **Valgte datatyper og begrunnelser:**
 
 [Skriv ditt svar her - forklar hvilke datatyper du har valgt for hver attributt og hvorfor]
+For id er varchar valgt pga id er ikke matematisk, trenger ikke regne på den. Tekst i varchar er bedre for mobilnummer, epost, fornavn og etternavn for enkelt å kunne redigere dem(legge til/fjerne karakterer osv) For mobil lar dette oss skrive for eksempel +47 og mellomrom. For lås og parkering er INTEGER valgt pga dette er et tall vi vil kunne regne med, for eks kunne lett finne ut av kapasitet, summering av antall ledige/leid, sammenligning mellom stasjoner osv. Utleie/levering er satt som TIMESTAMP for å finne tid sykkelen er brukt.
+
 
 **`CHECK`-constraints:**
 
 [Skriv ditt svar her - list opp alle CHECK-constraints du har lagt til og forklar hvorfor de er nødvendige]
+kunde_id, sykel_id og stasjon_id vil ha constraint primary key, for de kan ikke være NULL og kan ikke ha duplicates.
 
 **ER-diagram:**
 
 [Legg inn mermaid-kode eller eventuelt en bildefil fra `mermaid.live` her]
+https://mermaid.live/edit#pako:eNqFU9tO4zAQ_RVrnrZSqWLn0uI3BGWFKlaI7dMqUmXItA1x7Mix0bKln8OX8GM4vaDQBK1f7PE5M3Nmxt7Ao84QOKC5ysXKiDJVxK_CqQzJZm8061mYx7UwP2gQDPboIs_I3azLmAxIqR9yqVxZouniLI4GBCtd2x7MB19qo8Sz6kkdez9rsQVv08OhfikKlLUV9ZNWaPqVD8iBcCr95td8-nN6TyphCjS5Wi0qKeq6S5Dvb7V37iaX_TmbevbSvuvWiarr2UlsZyXmXyZx1LJHvo_bntP17H_a2oz5ze309_zi9q5RZuzCHis-AaWzLXAnuX8ar6_k7IzozbFTnHgB7Yf2STiUy0mzmS_t7XIejCvQzyNVMISVyTPg1jgcgn93pWhM2PUtBbvGElPg_pjhUjhpU0jV1rtVQv3Rujx6Gu1Wa-BLIWtvuSoTFg8f4_PWoJdsLrVTFjhlLNpFAb6Bv8BZGIwiGoc0HLNgHISUDeHF0yajOPF3STymSRyzcbgdwr9d4mB0HiVsQpPkPKDhhNFo-wGbkxYD
 
 ---
 
@@ -43,15 +53,18 @@
 **Valgte primærnøkler og begrunnelser:**
 
 [Skriv ditt svar her - forklar hvilke primærnøkler du har valgt for hver entitet og hvorfor]
+kunde_id, hver kunde må være unik. mobil og epost kan endres av bruker men id må være konstant. Stasjons_id må være unik for at man skal kunne vite nøyaktig hvor en sykkel er/blir lånt/blir levert.
+Sykkel id må være unik for å vite hvilken sykkel leies, hvilken som er ledig og se hver sykkel sin historikk.
 
 **Naturlige vs. surrogatnøkler:**
 
 [Skriv ditt svar her - diskuter om du har brukt naturlige eller surrogatnøkler og hvorfor]
+id er surrogatnøkler, er kunstig data laget for å ha unike verdier som vi kan identifisere og som ikke endres. Naturlige nøkler som mobilnr kan endres.
 
 **Oppdatert ER-diagram:**
 
 [Legg inn mermaid-kode eller eventuelt en bildefil fra `mermaid.live` her]
-
+https://mermaid.live/edit#pako:eNqFU9tO4zAQ_RVrnrZSqWLn0uI3BGWFKlaI7dMqUmXItA1x7Mix0bKln8OX8GM4vaDQBK1f7PE5M3Nmxt7Ao84QOKC5ysXKiDJVxK_CqQzJZm8061mYx7UwP2gQDPboIs_I3azLmAxIqR9yqVxZouniLI4GBCtd2x7MB19qo8Sz6kkdez9rsQVv08OhfikKlLUV9ZNWaPqVD8iBcCr95td8-nN6TyphCjS5Wi0qKeq6S5Dvb7V37iaX_TmbevbSvuvWiarr2UlsZyXmXyZx1LJHvo_bntP17H_a2oz5ze309_zi9q5RZuzCHis-AaWzLXAnuX8ar6_k7IzozbFTnHgB7Yf2STiUy0mzmS_t7XIejCvQzyNVMISVyTPg1jgcgn93pWhM2PUtBbvGElPg_pjhUjhpU0jV1rtVQv3Rujx6Gu1Wa-BLIWtvuSoTFg8f4_PWoJdsLrVTFjhlLNpFAb6Bv8BZGIwiGoc0HLNgHISUDeHF0yajOPF3STymSRyzcbgdwr9d4mB0HiVsQpPkPKDhhNFo-wGbkxYD
 ---
 
 ### Oppgave 1.4: Forhold og fremmednøkler
@@ -59,15 +72,27 @@
 **Identifiserte forhold og kardinalitet:**
 
 [Skriv ditt svar her - list opp alle forholdene mellom entitetene og angi kardinalitet]
+    sykkelstasjoner || -- o{ sykler : en stasjon har ingen eller mange sykler, en til mange
+    kunde || -- o{ utleie : en kunde leier ingen eller flere sykler, en til mange
+    sykler || -- o{ utleie : 
 
 **Fremmednøkler:**
 
 [Skriv ditt svar her - list opp alle fremmednøklene og forklar hvordan de implementerer forholdene]
+sykler.stasjon_id
+Hver sykkel peker på en stasjon, forholdet de implenterer er en til mange, én stasjon -- mange sykler, én sykkel -- kun én stasjon
+
+utleie.kunde_id
+Hver utleie må tilhøre én eksisterende kunde.
+Forholdet de implementerer er også en til mange, én kunde -- mange utleier, én utleie -- kun én kunde
+
+utleie.sykkel_id                                                                                                                      
+Hver utleie må gjelde én bestemt sykkel. Forholdet implemtert er en til mange. én sykkel -- mange utleier (ikke samtidig men historikk). én utleie -- én sykkel.
 
 **Oppdatert ER-diagram:**
 
 [Legg inn mermaid-kode eller eventuelt en bildefil fra `mermaid.live` her]
-
+https://mermaid.live/edit#pako:eNqFU9tO4zAQ_RVrnrZSqWLn0uI3BGWFKlaI7dMqUmXItA1x7Mix0bKln8OX8GM4vaDQBK1f7PE5M3Nmxt7Ao84QOKC5ysXKiDJVxK_CqQzJZm8061mYx7UwP2gQDPboIs_I3azLmAxIqR9yqVxZouniLI4GBCtd2x7MB19qo8Sz6kkdez9rsQVv08OhfikKlLUV9ZNWaPqVD8iBcCr95td8-nN6TyphCjS5Wi0qKeq6S5Dvb7V37iaX_TmbevbSvuvWiarr2UlsZyXmXyZx1LJHvo_bntP17H_a2oz5ze309_zi9q5RZuzCHis-AaWzLXAnuX8ar6_k7IzozbFTnHgB7Yf2STiUy0mzmS_t7XIejCvQzyNVMISVyTPg1jgcgn93pWhM2PUtBbvGElPg_pjhUjhpU0jV1rtVQv3Rujx6Gu1Wa-BLIWtvuSoTFg8f4_PWoJdsLrVTFjhlLNpFAb6Bv8BZGIwiGoc0HLNgHISUDeHF0yajOPF3STymSRyzcbgdwr9d4mB0HiVsQpPkPKDhhNFo-wGbkxYD
 ---
 
 ### Oppgave 1.5: Normalisering
