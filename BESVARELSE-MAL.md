@@ -18,13 +18,16 @@
 sykkelstasjoner
 sykler
 kunde
+lås
 
 **Attributter for hver entitet:**
 
 [Skriv ditt svar her - list opp attributtene for hver entitet]
-sykkelstasjoner: stasjon_id, sykel_id, parkering_plass
-sykler: sykel_id, leie_status, utleie_tid, levering_tid
-kunde: kunde_id, mobilnummer, epost, fornavn, etternavn 
+sykkelstasjoner: stasjon_id, parkering_plass, lås_id
+sykler: sykel_id, stasjon_id
+kunde: kunde_id, mobilnummer, epost, fornavn, etternavn
+lås: lås_id, stasjon_id
+utleie: utleie_id, kunde_id, sykkel_id, TIMESTAMP start_tid, TIMESTAMP slutt_tid
 
 ---
 
