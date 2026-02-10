@@ -1,8 +1,8 @@
 # Besvarelse - Refleksjon og Analyse
 
-**Student:** [Ditt navn]
+**Student:** Svein Kåre Sleveland
 
-**Studentnummer:** [Ditt studentnummer]
+**Studentnummer:** svsle1859
 
 **Dato:** [Innleveringsdato]
 
