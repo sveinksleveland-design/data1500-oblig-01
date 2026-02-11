@@ -6,7 +6,8 @@
 -- Opprett grunnleggende tabeller
 CREATE TABLE kunde (
     kunde_id VARCHAR(100) PRIMARY KEY,
-    mobilnummer VARCHAR(8),
+    mobilnummer VARCHAR(8)
+        CHECK (mobilnummer ~ '^[0-9]{8}$'),
     epost VARCHAR(254),
     fornavn VARCHAR(20),
     etternavn VARCHAR(15)
@@ -91,3 +92,11 @@ GRANT kunde TO kunde_1;
 
 -- Vis at initialisering er fullført (kan se i loggen fra "docker-compose log"
 SELECT 'Database initialisert!' as status;
+
+oblig01=# SELECT 'Database initialisert!' as status;
+         status
+------------------------
+ Database initialisert!
+(1 row)
+
+oblig01=#
