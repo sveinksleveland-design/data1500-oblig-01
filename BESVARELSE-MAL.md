@@ -141,6 +141,7 @@ https://mermaid.live/edit#pako:eNqdU9tO4zAQ_RVrnrZSqeykKa3fEBSEKhDa7ROKVBnitiGOH
 **Dokumentasjon av vellykket kjøring:**
 
 [Skriv ditt svar her - f.eks. skjermbilder eller output fra terminalen som viser at databasen ble opprettet uten feil]
+```
 oblig01=# \dt
               List of relations
   Schema   |      Name       | Type  | Owner
@@ -237,7 +238,8 @@ oblig01-# WHERE schemaname = 'public';
  public     | sykkelstasjoner
  public     | utleie
  public     | kunde
-(6 rows)
+(5 rows)
+```
 
 **Spørring mot systemkatalogen:**
 
