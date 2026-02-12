@@ -282,18 +282,25 @@ oblig01=#
 
 ```sql
 [Skriv din SQL-kode for å opprette rollen 'kunde' her]
+CREATE ROLE kunde;
 ```
 
 **SQL for å opprette bruker:**
 
 ```sql
 [Skriv din SQL-kode for å opprette brukeren 'kunde_1' her]
+CREATE USER kunde_1 WITH PASSWORD 'passord123';
 ```
 
 **SQL for å tildele rettigheter:**
 
 ```sql
 [Skriv din SQL-kode for å tildele rettigheter til rollen her]
+GRANT SELECT ON sykler TO kunde;
+GRANT SELECT ON sykkelstasjoner TO kunde;
+GRANT SELECT, INSERT ON utleie TO kunde;
+
+GRANT kunde TO kunde_1;
 ```
 
 ---
