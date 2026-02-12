@@ -141,6 +141,103 @@ https://mermaid.live/edit#pako:eNqdU9tO4zAQ_RVrnrZSqeykKa3fEBSEKhDa7ROKVBnitiGOH
 **Dokumentasjon av vellykket kjøring:**
 
 [Skriv ditt svar her - f.eks. skjermbilder eller output fra terminalen som viser at databasen ble opprettet uten feil]
+oblig01=# \dt
+              List of relations
+  Schema   |      Name       | Type  | Owner
+-----------+-----------------+-------+-------
+ public    | kunde           | table | admin
+ public    | lås             | table | admin
+ public    | sykkelstasjoner | table | admin
+ public    | sykler          | table | admin
+ public    | utleie          | table | admin
+(5 rows)
+
+oblig01=# \d kunde;
+                         Table "public.kunde"
+   Column    |          Type          | Collation | Nullable | Default
+-------------+------------------------+-----------+----------+---------
+ kunde_id    | character varying(100) |           | not null |
+ mobilnummer | character varying(11)  |           |          |
+ epost       | character varying(254) |           |          |
+ fornavn     | character varying(20)  |           |          |
+ etternavn   | character varying(15)  |           |          |
+Indexes:
+    "kunde_pkey" PRIMARY KEY, btree (kunde_id)
+Check constraints:
+    "kunde_mobilnummer_check" CHECK (mobilnummer::text ~ '^\+47[0-9]{8}$'::text)
+Referenced by:
+    TABLE "utleie" CONSTRAINT "utleie_kunde_id_fkey" FOREIGN KEY (kunde_id) REFERENCES kunde(kunde_id)
+
+oblig01=# \d lås;
+                         Table "public.lås"
+   Column   |         Type          | Collation | Nullable | Default
+------------+-----------------------+-----------+----------+---------
+ las_id     | integer               |           | not null |
+ stasjon_id | character varying(10) |           |          |
+Indexes:
+    "lås_pkey" PRIMARY KEY, btree (las_id)
+Foreign-key constraints:
+    "lås_stasjon_id_fkey" FOREIGN KEY (stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
+
+oblig01=# \d sykkelstasjoner;
+                      Table "public.sykkelstasjoner"
+     Column      |         Type          | Collation | Nullable | Default
+-----------------+-----------------------+-----------+----------+---------
+ stasjon_id      | character varying(10) |           | not null |
+ parkering_plass | integer               |           |          |
+ stasjon_navn    | character varying(50) |           |          |
+Indexes:
+    "sykkelstasjoner_pkey" PRIMARY KEY, btree (stasjon_id)
+Referenced by:
+    TABLE ""lås"" CONSTRAINT "lås_stasjon_id_fkey" FOREIGN KEY (stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
+    TABLE "sykler" CONSTRAINT "sykler_stasjon_id_fkey" FOREIGN KEY (stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
+    TABLE "utleie" CONSTRAINT "utleie_slutt_stasjon_id_fkey" FOREIGN KEY (slutt_stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
+    TABLE "utleie" CONSTRAINT "utleie_start_stasjon_id_fkey" FOREIGN KEY (start_stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
+
+oblig01=# \d sykler;
+                        Table "public.sykler"
+   Column   |         Type          | Collation | Nullable | Default
+------------+-----------------------+-----------+----------+---------
+ sykkel_id  | character varying(20) |           | not null |
+ stasjon_id | character varying(10) |           |          |
+ modell     | character varying(50) |           |          |
+Indexes:
+    "sykler_pkey" PRIMARY KEY, btree (sykkel_id)
+Foreign-key constraints:
+    "sykler_stasjon_id_fkey" FOREIGN KEY (stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
+Referenced by:
+    TABLE "utleie" CONSTRAINT "utleie_sykkel_id_fkey" FOREIGN KEY (sykkel_id) REFERENCES sykler(sykkel_id)
+
+oblig01=# \d utleie;
+                                               Table "public.utleie"
+      Column      |            Type             | Collation | Nullable |                  Default
+------------------+-----------------------------+-----------+----------+-------------------------------------------
+ utleie_id        | integer                     |           | not null | nextval('utleie_utleie_id_seq'::regclass)
+ kunde_id         | character varying(100)      |           |          |
+ sykkel_id        | character varying(20)       |           |          |
+ start_stasjon_id | character varying(10)       |           |          |
+ slutt_stasjon_id | character varying(10)       |           |          |
+ start_tid        | timestamp without time zone |           | not null |
+ slutt_tid        | timestamp without time zone |           | not null |
+Indexes:
+    "utleie_pkey" PRIMARY KEY, btree (utleie_id)
+Foreign-key constraints:
+    "utleie_kunde_id_fkey" FOREIGN KEY (kunde_id) REFERENCES kunde(kunde_id)
+    "utleie_slutt_stasjon_id_fkey" FOREIGN KEY (slutt_stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
+    "utleie_start_stasjon_id_fkey" FOREIGN KEY (start_stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
+    "utleie_sykkel_id_fkey" FOREIGN KEY (sykkel_id) REFERENCES sykler(sykkel_id)
+
+oblig01=# SELECT schemaname, tablename
+oblig01-# FROM pg_catalog.pg_tables
+oblig01-# WHERE schemaname = 'public';
+ schemaname |    tablename
+------------+-----------------
+ public     | lås
+ public     | sykler
+ public     | sykkelstasjoner
+ public     | utleie
+ public     | kunde
+(6 rows)
 
 **Spørring mot systemkatalogen:**
 
@@ -156,6 +253,21 @@ ORDER BY table_name;
 
 ```
 [Skriv resultatet av spørringen her - list opp alle tabellene som ble opprettet]
+oblig01=# SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+  AND table_type = 'BASE TABLE'
+ORDER BY table_name;
+   table_name
+-----------------
+ kunde
+ lås
+ sykkelstasjoner
+ sykler
+ utleie
+(5 rows)
+
+oblig01=#
 ```
 
 ---
