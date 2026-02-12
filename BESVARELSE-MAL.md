@@ -311,6 +311,23 @@ GRANT kunde TO kunde_1;
 
 ```sql
 [Skriv din SQL-kode for VIEW her]
+CREATE OR REPLACE VIEW mine_utleier AS
+SELECT
+    k.fornavn,
+    k.etternavn,
+    u.sykkel_id,
+    sy.modell AS sykkel_navn,
+    s_start.stasjon_navn AS start_stasjon,
+    s_slutt.stasjon_navn AS slutt_stasjon,
+    u.start_tid,
+    u.slutt_tid
+FROM utleie u
+JOIN kunde k ON u.kunde_id = k.kunde_id
+JOIN sykler sy ON u.sykkel_id = sy.sykkel_id
+JOIN sykkelstasjoner s_start ON u.start_stasjon_id = s_start.stasjon_id
+JOIN sykkelstasjoner s_slutt ON u.slutt_stasjon_id = s_slutt.stasjon_id
+WHERE u.kunde_id = current_user;
+-- feks (u.kunde_id = k008';
 ```
 
 **Ulempe med VIEW vs. POLICIES:**
