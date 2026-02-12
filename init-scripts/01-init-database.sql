@@ -6,19 +6,18 @@
 -- Opprett grunnleggende tabeller
 CREATE TABLE kunde (
     kunde_id VARCHAR(100) PRIMARY KEY,
-    mobilnummer VARCHAR(8)
-        CHECK (mobilnummer ~ '^[0-9]{8}$'),
+    mobilnummer VARCHAR(11)
+        CHECK (mobilnummer ~ '^\+47[0-9]{8}$'),
     epost VARCHAR(254),
     fornavn VARCHAR(20),
     etternavn VARCHAR(15)
 );
 
-
 CREATE TABLE sykkelstasjoner (
     stasjon_id VARCHAR(10) PRIMARY KEY,
-    parkering_plass INTEGER
+    parkering_plass INTEGER,
+    stasjon_navn VARCHAR(50)
 );
-
 
 CREATE TABLE lås (
     las_id INTEGER PRIMARY KEY,
@@ -27,24 +26,27 @@ CREATE TABLE lås (
         REFERENCES sykkelstasjoner(stasjon_id)
 );
 
-
 CREATE TABLE sykler (
     sykkel_id VARCHAR(20) PRIMARY KEY,
     stasjon_id VARCHAR(10),
-    FOREIGN KEY (stasjon_id)
-        REFERENCES sykkelstasjoner(stasjon_id)
+    modell VARCHAR(50),
+    FOREIGN KEY (stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
 );
-
 
 CREATE TABLE utleie (
-    utleie_id INTEGER PRIMARY KEY,
+    utleie_id SERIAL PRIMARY KEY,
     kunde_id VARCHAR(100),
     sykkel_id VARCHAR(20),
-    start_tid TIMESTAMP,
-    slutt_tid TIMESTAMP,
+    start_stasjon_id VARCHAR(10),
+    slutt_stasjon_id VARCHAR(10),
+    start_tid TIMESTAMP NOT NULL,
+    slutt_tid TIMESTAMP NOT NULL,
     FOREIGN KEY (kunde_id) REFERENCES kunde(kunde_id),
-    FOREIGN KEY (sykkel_id) REFERENCES sykler(sykkel_id)
+    FOREIGN KEY (sykkel_id) REFERENCES sykler(sykkel_id),
+    FOREIGN KEY (start_stasjon_id) REFERENCES sykkelstasjoner(stasjon_id),
+    FOREIGN KEY (slutt_stasjon_id) REFERENCES sykkelstasjoner(stasjon_id)
 );
+
 
 
 -- Sett inn testdata
