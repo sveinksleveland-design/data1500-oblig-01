@@ -349,12 +349,34 @@ WHERE u.kunde_id = current_user;
 **Totalt antall utleier per år:**
 
 [Skriv din utregning her]
+Høysesong (mai–september)
+5 måneder × 20 000
+= 100 000
+
+Mellomsesong (mars, april, oktober, november)
+4 måneder × 5 000
+= 20 000
+
+Lavsesong (desember–februar)
+3 måneder × 500
+= 1 500
+
+100 000 + 20 000 + 1 500 = 121 500 utleier første år.
 
 **Estimat for lagringskapasitet:**
 
 [Skriv din utregning her - vis hvordan du har beregnet lagringskapasiteten for hver tabell]
+char 1byte
+integer	4byte	
+timestamp 8 byte	
+boolean	1byte
+timestamp 8byte
+
+
+
 
 **Totalt for første år:**
+
 
 [Skriv ditt estimat her]
 
